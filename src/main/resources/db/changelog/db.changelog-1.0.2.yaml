@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1.0.0
+      author: dinairton.rodrigues
+      labels: insert device domain
+      context: test
+      changes:
+        - sql: |
+            INSERT INTO device_domain (id,name, brand, state, creation_date_time) 
+            VALUES (100,'maria 1', 'brand 1', 0, '2026-01-21 19:35:00');
+            INSERT INTO device_domain (id,name, brand, state, creation_date_time) 
+            VALUES (200,'maria 2', 'brand 2', 1, '2026-01-21 19:35:00');
