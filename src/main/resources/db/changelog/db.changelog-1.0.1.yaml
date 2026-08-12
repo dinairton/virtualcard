@@ -18,7 +18,7 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: card_id
+                  name: virtual_card_id
                   type: bigint
                   constraints:
                     nullable: false
@@ -44,7 +44,7 @@ databaseChangeLog:
                     nullable: false
         - addForeignKeyConstraint:
             baseTableName: transaction
-            baseColumnNames: card_id
+            baseColumnNames: virtual_card_id
             referencedTableName: virtual_card
             referencedColumnNames: id
             constraintName: fk_transcation_virtual_card

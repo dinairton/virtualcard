@@ -28,7 +28,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: state
+                  name: statue
                   type: tinyint
                   constraints:
                     nullable: false

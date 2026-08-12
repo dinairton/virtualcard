@@ -2,7 +2,7 @@ databaseChangeLog:
   - changeSet:
       id: 1.0.0
       author: dinairton.rodrigues
-      labels: insert device domain
+      labels: insert virtual card
       context: test
       changes:
         - sql: |
