@@ -23,7 +23,7 @@ public class Transaction {
     private VirtualCard virtualCard;
 
     @Column(nullable = false)
-    private String type;
+    private TransactionTypeEnum type;
 
     @Column(nullable = false)
     private BigDecimal amount;

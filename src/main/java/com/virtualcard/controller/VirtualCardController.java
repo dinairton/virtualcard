@@ -1,15 +1,21 @@
 package com.virtualcard.controller;
 
 
+import com.virtualcard.dto.CardTransactionDTO;
+import com.virtualcard.dto.TransactionDTO;
+import com.virtualcard.dto.VirtualCardDTO;
 import com.virtualcard.service.VirtualCardService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
 
 @RestController
-@RequestMapping(value="/api/vitural-card")
+@RequestMapping(value="/api/virtual-card")
 @RequiredArgsConstructor
 public class VirtualCardController {
 
@@ -17,5 +23,42 @@ public class VirtualCardController {
 
     private final VirtualCardService service;
 
+    @PostMapping
+    public ResponseEntity<VirtualCardDTO> create(@RequestBody VirtualCardDTO dto) {
+        logger.info("Create virtual card....");
+        return ResponseEntity.ok(service.create(dto));
+    }
+
+    @PutMapping
+    public ResponseEntity<VirtualCardDTO> spend(@RequestBody CardTransactionDTO dto) {
+        logger.info("Spend virtual card....");
+        return ResponseEntity.ok(service.spend(dto));
+    }
+
+    @PutMapping
+    public ResponseEntity<VirtualCardDTO> topUp(@RequestBody CardTransactionDTO dto) {
+        logger.info("TopUp virtual card....");
+        return ResponseEntity.ok(service.topUp(dto));
+    }
+
+    @GetMapping(value="/{cardId}")
+    public ResponseEntity<VirtualCardDTO> getDetail(@PathVariable Long cardId) {
+        logger.info("Get virtual card.... {}", cardId);
+        VirtualCardDTO dto = service.getVirtualCardById(cardId);
+
+        return Optional.ofNullable(dto)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping(value="/transactionHistory/{cardId}")
+    public ResponseEntity<List<TransactionDTO>> getTransactionHistory(@PathVariable Long cardId) {
+        logger.info("Get transactions history...");
+        List<TransactionDTO> list = service.getTransactionHistory(cardId);
+
+        return Optional.ofNullable(list)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
 
 }

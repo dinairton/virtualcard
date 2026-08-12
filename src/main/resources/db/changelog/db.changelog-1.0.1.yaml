@@ -24,7 +24,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: type
-                  type: varchar(255)
+                  type: tinyint
                   constraints:
                     nullable: false
               - column:
