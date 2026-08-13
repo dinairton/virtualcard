@@ -1,12 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: 1.0.0
+      id: 1.0.2
       author: dinairton.rodrigues
       labels: insert virtual card
       context: test
       changes:
         - sql: |
-            INSERT INTO device_domain (id,name, brand, state, creation_date_time) 
-            VALUES (100,'maria 1', 'brand 1', 0, '2026-01-21 19:35:00');
-            INSERT INTO device_domain (id,name, brand, state, creation_date_time) 
-            VALUES (200,'maria 2', 'brand 2', 1, '2026-01-21 19:35:00');
+            INSERT INTO virtual_card (id, card_holder_name, balance, status, created_at) 
+            VALUES (100, 'card 1', 250.0, 0, '2026-08-12 19:35:00');

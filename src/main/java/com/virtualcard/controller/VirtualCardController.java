@@ -23,19 +23,19 @@ public class VirtualCardController {
 
     private final VirtualCardService service;
 
-    @PostMapping
+    @PostMapping(value="/create")
     public ResponseEntity<VirtualCardDTO> create(@RequestBody VirtualCardDTO dto) {
         logger.info("Create virtual card....");
         return ResponseEntity.ok(service.create(dto));
     }
 
-    @PutMapping
+    @PutMapping(value="/spend")
     public ResponseEntity<VirtualCardDTO> spend(@RequestBody CardTransactionDTO dto) {
         logger.info("Spend virtual card....");
         return ResponseEntity.ok(service.spend(dto));
     }
 
-    @PutMapping
+    @PutMapping(value="/top-up")
     public ResponseEntity<VirtualCardDTO> topUp(@RequestBody CardTransactionDTO dto) {
         logger.info("TopUp virtual card....");
         return ResponseEntity.ok(service.topUp(dto));
@@ -51,7 +51,7 @@ public class VirtualCardController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping(value="/transactionHistory/{cardId}")
+    @GetMapping(value="/transactions/{cardId}")
     public ResponseEntity<List<TransactionDTO>> getTransactionHistory(@PathVariable Long cardId) {
         logger.info("Get transactions history...");
         List<TransactionDTO> list = service.getTransactionHistory(cardId);

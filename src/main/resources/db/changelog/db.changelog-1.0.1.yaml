@@ -3,7 +3,7 @@ databaseChangeLog:
       - runningAs:
           username: root
   - changeSet:
-      id: 1.0.0
+      id: 1.0.1
       author: dinairton.rodrigues
       labels: table of transactions
       changes:
@@ -33,7 +33,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: state
+                  name: status
                   type: tinyint
                   constraints:
                     nullable: false

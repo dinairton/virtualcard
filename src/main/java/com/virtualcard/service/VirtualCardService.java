@@ -3,10 +3,9 @@ package com.virtualcard.service;
 import com.virtualcard.dto.CardTransactionDTO;
 import com.virtualcard.dto.TransactionDTO;
 import com.virtualcard.dto.VirtualCardDTO;
-import com.virtualcard.entity.Transaction;
-import com.virtualcard.entity.TransactionStatusEnum;
-import com.virtualcard.entity.TransactionTypeEnum;
-import com.virtualcard.entity.VirtualCard;
+import com.virtualcard.entity.*;
+import com.virtualcard.exception.InvalidFundException;
+import com.virtualcard.exception.InvalidStatusException;
 import com.virtualcard.repository.TransactionRepository;
 import com.virtualcard.repository.VirtualCardRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,13 +24,14 @@ public class VirtualCardService {
     private final VirtualCardRepository  virtualCardRepository;
     private final TransactionRepository  transactionRepository;
 
-    public VirtualCardDTO getVirtualCardById(Long id) {
-        return null;
+    public VirtualCardDTO getVirtualCardById(Long cardId) {
+        return convertCardToDto(virtualCardRepository.getReferenceById(cardId));
     }
 
     public VirtualCardDTO create(VirtualCardDTO dto) {
-        VirtualCard cardEntity = virtualCardRepository.save(convertToModel(dto));
-        VirtualCardDTO newDto = convertToDto(cardEntity);
+        VirtualCard cardEntity = virtualCardRepository.save(convertToEntity(dto));
+
+        VirtualCardDTO newDto = convertCardToDto(cardEntity);
 
         saveTransaction(cardEntity, cardEntity.getBalance(), TransactionTypeEnum.ISSUANCE);
 
@@ -41,29 +41,35 @@ public class VirtualCardService {
     public VirtualCardDTO spend(CardTransactionDTO dto) {
         VirtualCard entity = virtualCardRepository.getReferenceById(dto.getVirtualCardId());
 
+        if (!entity.getStatus().equals(VirtualCardStatusEnum.ACTIVE))
+           throw new InvalidStatusException("Virtual card not active");
+
         entity.setBalance(entity.getBalance().subtract(dto.getTransactionValue()));
 
         if (entity.getBalance().compareTo(BigDecimal.ZERO) < 0) {
-            throw new RuntimeException("Insufficient balance");
+            throw new InvalidFundException("Insufficient funds");
         }
 
         saveTransaction(entity, dto.getTransactionValue(), TransactionTypeEnum.SPENDING);
 
-        return convertToDto(virtualCardRepository.save(entity));
+        return convertCardToDto(virtualCardRepository.save(entity));
     }
 
     public VirtualCardDTO topUp(CardTransactionDTO dto) {
         VirtualCard entity = virtualCardRepository.getReferenceById(dto.getVirtualCardId());
 
+        if (!entity.getStatus().equals(VirtualCardStatusEnum.ACTIVE))
+            throw new InvalidStatusException("Virtual card not active");
+
         entity.setBalance(entity.getBalance().add(dto.getTransactionValue()));
 
         saveTransaction(entity, dto.getTransactionValue(), TransactionTypeEnum.TOP_UP);
 
-        return convertToDto(virtualCardRepository.save(entity));
+        return convertCardToDto(virtualCardRepository.save(entity));
     }
 
     public List<TransactionDTO> getTransactionHistory(Long cardId) {
-        return transactionRepository.findAllByVirtualCardId(cardId);
+        return transactionRepository.findAllByVirtualCardId(cardId).stream().map(this::convertTransactionToDto).toList();
     }
 
     private void saveTransaction(VirtualCard cardEntity, BigDecimal amount, TransactionTypeEnum typeEnum) {
@@ -78,7 +84,7 @@ public class VirtualCardService {
         transactionRepository.save(transactionEntity);
     }
 
-    private VirtualCard convertToModel(VirtualCardDTO dto) {
+    private VirtualCard convertToEntity(VirtualCardDTO dto) {
         return VirtualCard.builder()
                 .cardHolderName(dto.getCardHolderName())
                 .balance(dto.getBalance())
@@ -87,11 +93,22 @@ public class VirtualCardService {
                 .build();
     }
 
-    private VirtualCardDTO convertToDto(VirtualCard entity) {
+    private VirtualCardDTO convertCardToDto(VirtualCard entity) {
         return VirtualCardDTO.builder()
                 .id(entity.getId())
                 .cardHolderName(entity.getCardHolderName())
                 .balance(entity.getBalance())
+                .status(entity.getStatus())
+                .createdAt(entity.getCreatedAt())
+                .build();
+    }
+
+    private TransactionDTO convertTransactionToDto(Transaction entity) {
+        return TransactionDTO.builder()
+                .id(entity.getId())
+                .virtualCard(convertCardToDto(entity.getVirtualCard()))
+                .amount(entity.getAmount())
+                .type(entity.getType())
                 .status(entity.getStatus())
                 .createdAt(entity.getCreatedAt())
                 .build();

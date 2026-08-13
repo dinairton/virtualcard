@@ -11,5 +11,5 @@ import java.util.List;
 @Repository
 public interface TransactionRepository extends JpaRepository <Transaction   , Long>{
 
-    List<TransactionDTO> findAllByVirtualCardId(Long id);
+    List<Transaction> findAllByVirtualCardId(Long id);
 }
