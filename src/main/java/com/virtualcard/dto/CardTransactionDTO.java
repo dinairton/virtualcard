@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 public class CardTransactionDTO {
 
     private Long virtualCardId;
+
     private BigDecimal transactionValue;
 
 }

@@ -1,4 +1,9 @@
 databaseChangeLog:
+  - preConditions:
+      - runningAs:
+          username: root
+      - dbms:
+          type: mariadb
   - changeSet:
       id: 1.0.2
       author: dinairton.rodrigues
@@ -7,4 +12,6 @@ databaseChangeLog:
       changes:
         - sql: |
             INSERT INTO virtual_card (id, card_holder_name, balance, status, created_at) 
-            VALUES (100, 'card 1', 250.0, 0, '2026-08-12 19:35:00');
+            VALUES (100, 'card 1', 100.0, 0, '2026-08-12 19:35:00');
+            INSERT INTO virtual_card (id, card_holder_name, balance, status, created_at) 
+            VALUES (200, 'card 1', 200.0, 1, '2026-08-12 19:35:00');

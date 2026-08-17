@@ -1,4 +1,9 @@
 databaseChangeLog:
+  - preConditions:
+      - runningAs:
+          username: root
+      - dbms:
+          type: mariadb
   - include:
       file: db/changelog/db.changelog-1.0.0.yaml
   - include:

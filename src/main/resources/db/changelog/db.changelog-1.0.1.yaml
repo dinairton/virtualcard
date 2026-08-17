@@ -2,6 +2,8 @@ databaseChangeLog:
   - preConditions:
       - runningAs:
           username: root
+      - dbms:
+          type: mariadb
   - changeSet:
       id: 1.0.1
       author: dinairton.rodrigues

@@ -59,7 +59,7 @@ public class VirtualCardService {
         VirtualCard entity = virtualCardRepository.getReferenceById(dto.getVirtualCardId());
 
         if (!entity.getStatus().equals(VirtualCardStatusEnum.ACTIVE))
-            throw new InvalidStatusException("Virtual card not active");
+            throw new InvalidStatusException("Virtual card is not active");
 
         entity.setBalance(entity.getBalance().add(dto.getTransactionValue()));
 
