@@ -4,10 +4,12 @@ package com.virtualcard.controller;
 import com.virtualcard.dto.CardTransactionDTO;
 import com.virtualcard.dto.TransactionDTO;
 import com.virtualcard.dto.VirtualCardDTO;
+import com.virtualcard.service.RateLimitService;
 import com.virtualcard.service.VirtualCardService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -27,11 +29,13 @@ public class VirtualCardControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
     @MockitoBean
     private VirtualCardService service;
 
+    @MockitoBean
+    private RateLimitService rateLimitService;
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
     void create() throws Exception {
