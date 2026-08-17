@@ -81,6 +81,11 @@ docker network create app-network
 ```bash
 docker run -d --name mariadb --network app-network -e MARIADB_ROOT_PASSWORD=root -p 3306:3306 mariadb:latest
 ```
+### Docker Image REDIS
+
+```bash
+docker run -d --name redis -p 6379:6379 redis:8
+```
 
 ### Build the Docker Image
 
@@ -155,6 +160,8 @@ virtualcard
 1. Add more endpoints and features.
 2. Implement authentication and security using **Spring Security**.
 3. Increase test coverage.
+4. Asynchronous processing
+5. Support for scheduled expiration of cards
 
 ---
 
