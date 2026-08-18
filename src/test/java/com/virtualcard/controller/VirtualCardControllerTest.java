@@ -45,10 +45,11 @@ public class VirtualCardControllerTest {
                 .status(VirtualCardStatusEnum.ACTIVE)
                 .build();
 
-        when(service.create("123", any(VirtualCardDTO.class))).thenReturn(VirtualCardDTO.builder()
+        when(service.create(any(), any(VirtualCardDTO.class))).thenReturn(VirtualCardDTO.builder()
                 .build());
 
         mockMvc.perform(post("/api/virtual-card/create")
+                        .header("IdemPotencyKey", "123")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk());
@@ -61,9 +62,10 @@ public class VirtualCardControllerTest {
                 .transactionValue(BigDecimal.TEN)
                 .build();
 
-        when(service.spend("2233", any(CardTransactionDTO.class))).thenReturn(VirtualCardDTO.builder().build());
+        when(service.spend(any(), any(CardTransactionDTO.class))).thenReturn(VirtualCardDTO.builder().build());
 
         mockMvc.perform(put("/api/virtual-card/spend")
+                        .header("IdemPotencyKey", "2233")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk());
@@ -76,9 +78,10 @@ public class VirtualCardControllerTest {
                 .transactionValue(BigDecimal.TEN)
                 .build();
 
-        when(service.spend("6745", any(CardTransactionDTO.class))).thenReturn(VirtualCardDTO.builder().build());
+        when(service.spend(any(), any(CardTransactionDTO.class))).thenReturn(VirtualCardDTO.builder().build());
 
         mockMvc.perform(put("/api/virtual-card/top-up")
+                        .header("IdemPotencyKey", "6745")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk());

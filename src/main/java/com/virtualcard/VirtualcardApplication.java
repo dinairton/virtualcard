@@ -7,9 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @OpenAPIDefinition(
         info = @Info(
-                title = "Lirtual Card API",
+                title = "Virtual Card API",
                 version = "0.0.1-SNAPSHOT",
-                description = ""
+                description = "Virtual Card Project"
         )
 )
 @SpringBootApplication
