@@ -7,11 +7,35 @@ databaseChangeLog:
   - changeSet:
       id: 1.0.2
       author: dinairton.rodrigues
-      labels: insert virtual card
-      context: test
+      labels: table of idempotency
       changes:
-        - sql: |
-            INSERT INTO virtual_card (id, card_holder_name, balance, status, created_at) 
-            VALUES (100, 'card 1', 100.0, 0, '2026-08-12 19:35:00');
-            INSERT INTO virtual_card (id, card_holder_name, balance, status, created_at) 
-            VALUES (200, 'card 1', 200.0, 1, '2026-08-12 19:35:00');
+        - createTable:
+            tableName: idem_potency
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: idem_potency_key
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: response
+                  type: longtext
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: tinyint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: datetime
+                  constraints:
+                    nullable: false
