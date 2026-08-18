@@ -5,6 +5,7 @@ import com.virtualcard.dto.CardTransactionDTO;
 import com.virtualcard.dto.TransactionDTO;
 import com.virtualcard.dto.VirtualCardDTO;
 import com.virtualcard.service.VirtualCardService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,19 +25,19 @@ public class VirtualCardController {
     private final VirtualCardService service;
 
     @PostMapping(value="/create")
-    public ResponseEntity<VirtualCardDTO> create(@RequestBody VirtualCardDTO dto) {
+    public ResponseEntity<VirtualCardDTO> create(@Valid @RequestBody VirtualCardDTO dto) {
         logger.info("Create virtual card....");
         return ResponseEntity.ok(service.create(dto));
     }
 
     @PutMapping(value="/spend")
-    public ResponseEntity<VirtualCardDTO> spend(@RequestBody CardTransactionDTO dto) {
+    public ResponseEntity<VirtualCardDTO> spend(@Valid @RequestBody CardTransactionDTO dto) {
         logger.info("Spend virtual card....");
         return ResponseEntity.ok(service.spend(dto));
     }
 
     @PutMapping(value="/top-up")
-    public ResponseEntity<VirtualCardDTO> topUp(@RequestBody CardTransactionDTO dto) {
+    public ResponseEntity<VirtualCardDTO> topUp(@Valid @RequestBody CardTransactionDTO dto) {
         logger.info("TopUp virtual card....");
         return ResponseEntity.ok(service.topUp(dto));
     }
