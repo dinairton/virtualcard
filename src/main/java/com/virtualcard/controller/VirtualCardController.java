@@ -25,21 +25,24 @@ public class VirtualCardController {
     private final VirtualCardService service;
 
     @PostMapping(value="/create")
-    public ResponseEntity<VirtualCardDTO> create(@Valid @RequestBody VirtualCardDTO dto) {
+    public ResponseEntity<VirtualCardDTO> create(@RequestHeader("IdemPotencyKey") String key,
+                                                 @Valid @RequestBody VirtualCardDTO dto) {
         logger.info("Create virtual card....");
-        return ResponseEntity.ok(service.create(dto));
+        return ResponseEntity.ok(service.create(key, dto));
     }
 
     @PutMapping(value="/spend")
-    public ResponseEntity<VirtualCardDTO> spend(@Valid @RequestBody CardTransactionDTO dto) {
+    public ResponseEntity<VirtualCardDTO> spend(@RequestHeader("IdemPotencyKey") String key,
+                                                @Valid @RequestBody CardTransactionDTO dto) {
         logger.info("Spend virtual card....");
-        return ResponseEntity.ok(service.spend(dto));
+        return ResponseEntity.ok(service.spend(key, dto));
     }
 
     @PutMapping(value="/top-up")
-    public ResponseEntity<VirtualCardDTO> topUp(@Valid @RequestBody CardTransactionDTO dto) {
+    public ResponseEntity<VirtualCardDTO> topUp(@RequestHeader("IdemPotencyKey") String key,
+                                                @Valid @RequestBody CardTransactionDTO dto) {
         logger.info("TopUp virtual card....");
-        return ResponseEntity.ok(service.topUp(dto));
+        return ResponseEntity.ok(service.topUp(key, dto));
     }
 
     @GetMapping(value="/{cardId}")

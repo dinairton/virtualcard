@@ -1,7 +1,10 @@
 package com.virtualcard.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.virtualcard.entity.VirtualCardStatusEnum;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -17,7 +20,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class VirtualCardDTO {
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private Long id;
 
     @NotBlank(message = "Holder name is required")
@@ -30,7 +33,8 @@ public class VirtualCardDTO {
     @NotNull(message = "Status is required")
     private VirtualCardStatusEnum status;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     private LocalDateTime createdAt;
 
 }

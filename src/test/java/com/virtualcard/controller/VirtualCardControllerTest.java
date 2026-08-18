@@ -4,12 +4,12 @@ package com.virtualcard.controller;
 import com.virtualcard.dto.CardTransactionDTO;
 import com.virtualcard.dto.TransactionDTO;
 import com.virtualcard.dto.VirtualCardDTO;
+import com.virtualcard.entity.VirtualCardStatusEnum;
 import com.virtualcard.service.RateLimitService;
 import com.virtualcard.service.VirtualCardService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -41,9 +41,11 @@ public class VirtualCardControllerTest {
     void create() throws Exception {
         VirtualCardDTO request = VirtualCardDTO.builder()
                 .cardHolderName("Test")
+                .balance(BigDecimal.TEN)
+                .status(VirtualCardStatusEnum.ACTIVE)
                 .build();
 
-        when(service.create(any(VirtualCardDTO.class))).thenReturn(VirtualCardDTO.builder()
+        when(service.create("123", any(VirtualCardDTO.class))).thenReturn(VirtualCardDTO.builder()
                 .build());
 
         mockMvc.perform(post("/api/virtual-card/create")
@@ -59,7 +61,7 @@ public class VirtualCardControllerTest {
                 .transactionValue(BigDecimal.TEN)
                 .build();
 
-        when(service.spend(any(CardTransactionDTO.class))).thenReturn(VirtualCardDTO.builder().build());
+        when(service.spend("2233", any(CardTransactionDTO.class))).thenReturn(VirtualCardDTO.builder().build());
 
         mockMvc.perform(put("/api/virtual-card/spend")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -74,7 +76,7 @@ public class VirtualCardControllerTest {
                 .transactionValue(BigDecimal.TEN)
                 .build();
 
-        when(service.spend(any(CardTransactionDTO.class))).thenReturn(VirtualCardDTO.builder().build());
+        when(service.spend("6745", any(CardTransactionDTO.class))).thenReturn(VirtualCardDTO.builder().build());
 
         mockMvc.perform(put("/api/virtual-card/top-up")
                         .contentType(MediaType.APPLICATION_JSON)

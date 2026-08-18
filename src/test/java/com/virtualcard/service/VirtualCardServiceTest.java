@@ -61,7 +61,7 @@ public class VirtualCardServiceTest {
     @Order(3)
     void create() {
        VirtualCardDTO newDto = service.create(
-                                        VirtualCardDTO.builder()
+               "123", VirtualCardDTO.builder()
                                         .cardHolderName("card x")
                                         .status(VirtualCardStatusEnum.ACTIVE)
                                         .balance(BigDecimal.ZERO)
@@ -74,7 +74,7 @@ public class VirtualCardServiceTest {
     @Order(4)
     void spend() {
         VirtualCardDTO newDto =
-                service.spend(CardTransactionDTO.builder()
+                service.spend("1234", CardTransactionDTO.builder()
                                                 .virtualCardId(100L)
                                                 .transactionValue(BigDecimal.TEN).build());
         assertNotNull(newDto);
@@ -86,7 +86,7 @@ public class VirtualCardServiceTest {
     void spendCardNotFound() {
         assertThrows(
                 EntityNotFoundException.class,
-                () -> service.spend(CardTransactionDTO.builder()
+                () -> service.spend("12345", CardTransactionDTO.builder()
                         .virtualCardId(500L)
                         .transactionValue(BigDecimal.TEN).build())
         );
@@ -97,7 +97,7 @@ public class VirtualCardServiceTest {
     void spendCardNotActive() {
         assertThrows(
                 InvalidStatusException.class,
-                () -> service.spend(CardTransactionDTO.builder()
+                () -> service.spend("123456", CardTransactionDTO.builder()
                         .virtualCardId(200L)
                         .transactionValue(BigDecimal.TEN).build())
         );
@@ -108,7 +108,7 @@ public class VirtualCardServiceTest {
     @Order(7)
     void topUp() {
         VirtualCardDTO newDto =
-                service.topUp(CardTransactionDTO.builder()
+                service.topUp("1234567", CardTransactionDTO.builder()
                         .virtualCardId(100L)
                         .transactionValue(BigDecimal.TWO).build());
 
@@ -121,7 +121,7 @@ public class VirtualCardServiceTest {
     void topUpCardNotActive() {
         assertThrows(
                 InvalidStatusException.class,
-                () -> service.topUp(CardTransactionDTO.builder()
+                () -> service.topUp("12345678", CardTransactionDTO.builder()
                         .virtualCardId(200L)
                         .transactionValue(BigDecimal.TEN).build())
         );
